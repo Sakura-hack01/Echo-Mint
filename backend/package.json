@@ -4,6 +4,7 @@
   "description": "Zero-dependency Node.js AI, image generation, and IPFS pinning API for EzyNFT",
   "main": "index.js",
   "scripts": {
+    "build": "node --check index.js",
     "start": "node index.js"
   },
   "engines": {

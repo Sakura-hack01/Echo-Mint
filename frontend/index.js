@@ -2,7 +2,12 @@ import 'regenerator-runtime/runtime';
 import { Wallet } from './near-wallet';
 
 const CONTRACT_ADDRESS = process.env.CONTRACT_NAME || '';
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
+const isLocalHost =
+  typeof window !== 'undefined' &&
+  /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
+const BACKEND_URL =
+  process.env.BACKEND_URL ||
+  (isLocalHost ? 'http://localhost:3001' : 'https://echo-mint.onrender.com');
 const MINT_DEPOSIT_YOCTO = '50000000000000000000000'; // 0.05 NEAR (excess auto-refunded by contract)
 
 const wallet = new Wallet({

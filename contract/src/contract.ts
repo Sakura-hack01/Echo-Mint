@@ -44,8 +44,8 @@ export interface Token {
 
 const DEFAULT_CONTRACT_METADATA: NFTContractMetadata = {
   spec: "nft-1.0.0",
-  name: "EzyNFT",
-  symbol: "EZYNFT",
+  name: "EchoMint",
+  symbol: "ECHOMINT",
   icon: null,
   base_uri: null,
   reference: null,
@@ -53,7 +53,7 @@ const DEFAULT_CONTRACT_METADATA: NFTContractMetadata = {
 };
 
 @NearBindgen({})
-export class EzyNFTContract {
+export class EchoMintContract {
   owner_id: string = "";
   contract_metadata: NFTContractMetadata = DEFAULT_CONTRACT_METADATA;
   tokens_by_id = new LookupMap<Token>("t");
@@ -170,7 +170,7 @@ export class EzyNFTContract {
 
     const resolvedTokenId = token_id && token_id.trim().length > 0
       ? token_id.trim()
-      : `ezy-${this.next_token_seq}`;
+      : `echo-${this.next_token_seq}`;
 
     assert(
       !this.tokens_by_id.containsKey(resolvedTokenId),

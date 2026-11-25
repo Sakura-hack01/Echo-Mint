@@ -1,4 +1,4 @@
-name: Deploy EzyNFT Frontend to GitHub Pages
+name: Deploy EchoMint Frontend to GitHub Pages
 
 on:
   push:

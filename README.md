@@ -1,4 +1,4 @@
-# Echo-Mint (EzyNFT Studio)
+# EchoMint
 
 **AI-to-NEAR NFT Studio with Conversational Minting, IPFS Pinning & On-Chain Prompt Provenance.**
 
@@ -9,15 +9,15 @@
 
 ## Overview
 
-Echo-Mint turns NFT creation into a guided conversation. Users connect a **NEAR Wallet** (or explore via **Demo Mode**), chat with the **EzyNFT Assistant** to brainstorm and generate artwork, pin the image and metadata to **IPFS via Pinata**, and mint directly on **NEAR Protocol** (`NEP-171` / `NEP-177`) with the AI prompt provenance stored on-chain.
+EchoMint turns NFT creation into a guided conversation. Users connect a **NEAR Wallet** (or explore via **Preview Studio**), chat with the **EchoMint Assistant** to brainstorm and generate artwork, pin the image and metadata to **IPFS via Pinata**, and mint directly on **NEAR Protocol** (`NEP-171` / `NEP-177`) with the AI prompt provenance stored on-chain.
 
 ## Architecture
 
 | Component | Path | Details |
 | :--- | :--- | :--- |
-| **Smart Contract** | [`contract/src/contract.ts`](contract/src/contract.ts) | `EzyNFTContract` (`near-sdk-js`) implementing `nft_mint`, `nft_token`, `nft_tokens`, `nft_tokens_for_owner`, `nft_transfer`, automatic excess storage deposit refunds, and prompt provenance in `token_metadata.extra`. |
+| **Smart Contract** | [`contract/src/contract.ts`](contract/src/contract.ts) | `EchoMintContract` (`near-sdk-js`) implementing `nft_mint`, `nft_token`, `nft_tokens`, `nft_tokens_for_owner`, `nft_transfer`, automatic excess storage deposit refunds, and prompt provenance in `token_metadata.extra`. |
 | **Backend API** | [`backend/index.js`](backend/index.js) | Zero-dependency Node.js HTTP server (`>=18`) supporting Gemini, OpenAI, Hugging Face, Stability AI, and Pinata IPFS pinning with automatic multi-provider fallback and built-in procedural SVG art demo mode. |
-| **Frontend Studio** | [`frontend/index.html`](frontend/index.html), [`frontend/index.js`](frontend/index.js) | Parcel web app using `@near-wallet-selector` (MyNearWallet, Ledger), a floating AI chatbot, Live NFT Draft preview, and on-chain Minted NFTs gallery. |
+| **Frontend Studio** | [`frontend/index.html`](frontend/index.html), [`frontend/index.js`](frontend/index.js) | Parcel web app using `@near-wallet-selector` (MyNearWallet, Ledger), an integrated AI chatbot, Live NFT Draft preview, and on-chain Minted NFTs gallery. |
 | **Integration Tests** | [`integration-tests/src/main.ava.ts`](integration-tests/src/main.ava.ts) | AVA + `near-workspaces` sandbox tests for `nft_metadata`, `nft_mint`, `nft_tokens_for_owner`, and `nft_transfer`. |
 
 ---

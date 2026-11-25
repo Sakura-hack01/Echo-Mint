@@ -86,7 +86,7 @@ function readJsonBody(req, maxBytes = 12 * 1024 * 1024) {
   });
 }
 
-const SYSTEM_PROMPT = `You are EzyNFT, a friendly Web3 & NFT creation co-pilot built on NEAR Protocol.
+const SYSTEM_PROMPT = `You are EchoMint, a friendly Web3 & NFT creation co-pilot built on NEAR Protocol.
 Your job is to help beginners:
 1. Understand Web3, NEAR wallets, gas/storage deposits, and IPFS simply.
 2. Co-create an NFT from natural language.
@@ -202,7 +202,7 @@ function builtInAssistantReply(messages, accountId) {
   ) {
     return {
       cleanText:
-        "IPFS (InterPlanetary File System) stores your NFT's artwork and metadata on a decentralized network identified by a cryptographic Content ID (CID), rather than a mutable web link. In EzyNFT, once you generate art, you can pin it to IPFS before minting it to your NEAR wallet.",
+        "IPFS (InterPlanetary File System) stores your NFT's artwork and metadata on a decentralized network identified by a cryptographic Content ID (CID), rather than a mutable web link. In EchoMint, once you generate art, you can pin it to IPFS before minting it to your NEAR wallet.",
       draft: null,
     };
   }
@@ -213,7 +213,7 @@ function builtInAssistantReply(messages, accountId) {
   ) {
     return {
       cleanText:
-        "Minting on NEAR creates a permanent NEP-171 token record inside the EzyNFT smart contract owned by your wallet (" +
+        "Minting on NEAR creates a permanent NEP-171 token record inside the EchoMint smart contract owned by your wallet (" +
         (accountId || "your NEAR account") +
         "). You attach a tiny storage deposit (~0.02–0.05 NEAR, with any excess refunded automatically by the contract) and sign once in your wallet!",
       draft: null,
@@ -241,7 +241,7 @@ function builtInAssistantReply(messages, accountId) {
       draft: {
         shouldGenerateImage: true,
         title,
-        description: `Co-created in EzyNFT Studio from prompt: "${subject}"`,
+        description: `Co-created in EchoMint Studio from prompt: "${subject}"`,
         imagePrompt: `${subject}, vibrant digital collectible artwork, crisp lighting, rich detail`,
         style: "Digital Collectible",
       },
@@ -441,7 +441,7 @@ function generateProceduralSvgArt(prompt, style = "Digital Art") {
   <rect width="512" height="512" fill="url(#glow)"/>
   ${shapes}
   <rect x="24" y="422" width="464" height="66" rx="14" fill="rgba(12,14,20,0.72)" stroke="rgba(255,255,255,0.18)"/>
-  <text x="40" y="449" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#FF585D">EZYNFT PROCEDURAL EDITION</text>
+  <text x="40" y="449" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" fill="#FF585D">ECHOMINT PROCEDURAL EDITION</text>
   <text x="40" y="472" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#F4F4F6">${safeLabel}</text>
 </svg>`;
 
@@ -473,8 +473,8 @@ async function pinToPinata({ imageDataUrl, title, description, provenance }) {
 
   const form = new FormData();
   const blob = new Blob([fileBuffer], { type: mimeType });
-  form.append("file", blob, `ezynft-${Date.now()}.${ext}`);
-  form.append("pinataMetadata", JSON.stringify({ name: `${title || "EzyNFT"} Artwork` }));
+  form.append("file", blob, `echomint-${Date.now()}.${ext}`);
+  form.append("pinataMetadata", JSON.stringify({ name: `${title || "EchoMint"} Artwork` }));
 
   const fileRes = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
     method: "POST",
@@ -495,7 +495,7 @@ async function pinToPinata({ imageDataUrl, title, description, provenance }) {
     image: imageIpfsUri,
     external_url: imageGatewayUrl,
     attributes: [
-      { trait_type: "Platform", value: "EzyNFT on NEAR" },
+      { trait_type: "Platform", value: "EchoMint on NEAR" },
       { trait_type: "AI Model", value: provenance?.model || "unknown" },
       { trait_type: "Style", value: provenance?.style || "Digital Art" },
     ],
@@ -509,7 +509,7 @@ async function pinToPinata({ imageDataUrl, title, description, provenance }) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      pinataMetadata: { name: `${title || "EzyNFT"} Metadata` },
+      pinataMetadata: { name: `${title || "EchoMint"} Metadata` },
       pinataContent: metadataPayload,
     }),
   });
@@ -668,7 +668,7 @@ const server = http.createServer(async (req, res) => {
 
 if (require.main === module) {
   server.listen(PORT, () => {
-    console.log(`EzyNFT Backend listening on http://localhost:${PORT}`);
+    console.log(`EchoMint Backend listening on http://localhost:${PORT}`);
     console.log("Active providers:", getProviderStatus());
   });
 }

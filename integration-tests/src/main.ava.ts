@@ -9,7 +9,7 @@ const test = anyTest as TestFn<{
 test.beforeEach(async (t) => {
   const worker = await Worker.init();
   const root = worker.rootAccount;
-  const contract = await root.createSubAccount('ezynft');
+  const contract = await root.createSubAccount('echomint');
   const alice = await root.createSubAccount('alice');
 
   await contract.deploy(process.argv[2]);
@@ -30,8 +30,8 @@ test('returns contract metadata', async (t) => {
   const metadata: { spec: string; name: string; symbol: string } =
     await contract.view('nft_metadata', {});
   t.is(metadata.spec, 'nft-1.0.0');
-  t.is(metadata.name, 'EzyNFT');
-  t.is(metadata.symbol, 'EZYNFT');
+  t.is(metadata.name, 'EchoMint');
+  t.is(metadata.symbol, 'ECHOMINT');
 });
 
 test('mints an NFT with AI prompt provenance and lists it for owner', async (t) => {
@@ -40,7 +40,7 @@ test('mints an NFT with AI prompt provenance and lists it for owner', async (t) 
   const provenance = JSON.stringify({
     prompt: 'Cyberpunk lotus floating over NEAR skyline',
     model: 'stable-diffusion-xl',
-    generator: 'EzyNFT AI Studio',
+    generator: 'EchoMint AI Studio',
   });
 
   const minted: any = await root.call(
@@ -50,7 +50,7 @@ test('mints an NFT with AI prompt provenance and lists it for owner', async (t) 
       receiver_id: alice.accountId,
       token_metadata: {
         title: 'Cyber Lotus #1',
-        description: 'Minted conversationally via EzyNFT',
+        description: 'Minted conversationally via EchoMint',
         media: 'ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi',
         extra: provenance,
       },
@@ -58,7 +58,7 @@ test('mints an NFT with AI prompt provenance and lists it for owner', async (t) 
     { attachedDeposit: NEAR.parse('0.05 N').toString() }
   );
 
-  t.is(minted.token_id, 'ezy-1');
+  t.is(minted.token_id, 'echo-1');
   t.is(minted.owner_id, alice.accountId);
   t.is(minted.metadata.title, 'Cyber Lotus #1');
   t.is(minted.metadata.extra, provenance);
@@ -67,7 +67,7 @@ test('mints an NFT with AI prompt provenance and lists it for owner', async (t) 
     account_id: alice.accountId,
   });
   t.is(owned.length, 1);
-  t.is(owned[0].token_id, 'ezy-1');
+  t.is(owned[0].token_id, 'echo-1');
 
   const totalSupply: string = await contract.view('nft_total_supply', {});
   t.is(totalSupply, '1');
@@ -95,7 +95,7 @@ test('transfers an NFT to a new owner', async (t) => {
     {
       receiver_id: root.accountId,
       token_id: 'custom-1',
-      memo: 'Gift via EzyNFT',
+      memo: 'Gift via EchoMint',
     },
     { attachedDeposit: '1' }
   );

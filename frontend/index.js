@@ -36,8 +36,12 @@ const state = {
 const el = {
   signedOut: document.querySelector('#signed-out-flow'),
   signedIn: document.querySelector('#signed-in-flow'),
+  topbarSignedOut: document.querySelector('#topbar-signed-out'),
+  topbarSignedIn: document.querySelector('#topbar-signed-in'),
   signInBtn: document.querySelector('#sign-in-button'),
+  topbarSignInBtn: document.querySelector('#topbar-signin-btn'),
   demoModeBtn: document.querySelector('#demo-mode-button'),
+  topbarDemoBtn: document.querySelector('#topbar-demo-btn'),
   signOutBtn: document.querySelector('#sign-out-button'),
   pillChat: document.querySelector('#pill-chat'),
   pillImage: document.querySelector('#pill-image'),
@@ -59,13 +63,14 @@ const el = {
   nftDraftForm: document.querySelector('#nft-draft-form'),
   nftGallery: document.querySelector('#nft-gallery'),
   refreshGalleryBtn: document.querySelector('#refresh-gallery-btn'),
-  chatPanel: document.querySelector('#ezy-chat-panel'),
-  chatLauncher: document.querySelector('#ezy-chat-launcher'),
-  chatClose: document.querySelector('#ezy-chat-close'),
+  chatPanel: document.querySelector('#echo-chat-panel'),
+  chatLauncher: document.querySelector('#echo-chat-launcher'),
+  chatClose: document.querySelector('#echo-chat-close'),
   chatOpenCta: document.querySelector('#open-chat-cta'),
-  chatMessages: document.querySelector('#ezy-chat-messages'),
-  chatForm: document.querySelector('#ezy-chat-form'),
-  chatInput: document.querySelector('#ezy-chat-input'),
+  emptyOpenChatBtn: document.querySelector('#empty-open-chat-btn'),
+  chatMessages: document.querySelector('#echo-chat-messages'),
+  chatForm: document.querySelector('#echo-chat-form'),
+  chatInput: document.querySelector('#echo-chat-input'),
 };
 
 window.onload = async () => {
@@ -82,12 +87,17 @@ window.onload = async () => {
   showSignedOut();
 };
 
-el.signInBtn.onclick = () => wallet.signIn();
-el.demoModeBtn.onclick = () => {
+function startDemoMode() {
   state.demoMode = true;
   state.accountId = 'demo-creator.testnet';
   enterStudio();
-};
+}
+
+el.signInBtn.onclick = () => wallet.signIn();
+el.topbarSignInBtn.onclick = () => wallet.signIn();
+el.demoModeBtn.onclick = startDemoMode;
+el.topbarDemoBtn.onclick = startDemoMode;
+
 el.signOutBtn.onclick = () => {
   if (state.demoMode) {
     state.demoMode = false;
@@ -100,12 +110,17 @@ el.signOutBtn.onclick = () => {
 
 function showSignedOut() {
   el.signedIn.style.display = 'none';
+  el.topbarSignedIn.style.display = 'none';
   el.signedOut.style.display = 'block';
+  el.topbarSignedOut.style.display = 'flex';
 }
 
 function enterStudio() {
   el.signedOut.style.display = 'none';
+  el.topbarSignedOut.style.display = 'none';
   el.signedIn.style.display = 'block';
+  el.topbarSignedIn.style.display = 'flex';
+
   document.querySelectorAll('[data-behavior=account-id]').forEach((node) => {
     node.innerText = state.accountId;
   });
@@ -139,7 +154,7 @@ async function checkBackendStatus() {
       );
     }
   } catch {
-    el.pillChat.textContent = 'AI: offline (start backend)';
+    el.pillChat.textContent = 'AI: offline';
     el.pillImage.textContent = 'Art: offline';
     el.pillIpfs.textContent = 'IPFS: offline';
   }
@@ -157,6 +172,7 @@ el.chatLauncher.onclick = () => {
 };
 el.chatClose.onclick = () => toggleChat(false);
 el.chatOpenCta.onclick = () => toggleChat(true);
+el.emptyOpenChatBtn.onclick = () => toggleChat(true);
 
 document.querySelectorAll('.chip-btn').forEach((btn) => {
   btn.onclick = () => {
@@ -212,7 +228,7 @@ async function sendChatMessage(text) {
 
     if (data.draft && data.draft.shouldGenerateImage) {
       el.draftPrompt.value = data.draft.imagePrompt || text;
-      el.draftTitle.value = data.draft.title || 'EzyNFT Creation';
+      el.draftTitle.value = data.draft.title || 'EchoMint Creation';
       el.draftDesc.value = data.draft.description || '';
       el.draftStyle.value = data.draft.style || 'Digital Collectible';
 
@@ -228,7 +244,7 @@ async function sendChatMessage(text) {
       }
     }
   } catch (err) {
-    thinking.textContent = `Could not reach EzyNFT backend (${err.message}). Make sure "node backend/index.js" is running on ${BACKEND_URL}.`;
+    thinking.textContent = `Could not reach EchoMint backend (${err.message}).`;
   }
 }
 
@@ -264,7 +280,7 @@ async function generateArtwork(prompt, style) {
       el.draftTitle.value = prompt.split(/\s+/).slice(0, 4).join(' ');
     }
     if (!el.draftDesc.value.trim()) {
-      el.draftDesc.value = `Co-created in EzyNFT Studio from prompt: "${prompt}"`;
+      el.draftDesc.value = `Co-created in EchoMint Studio from prompt: "${prompt}"`;
     }
 
     el.previewImg.src = data.imageDataUrl;
@@ -308,7 +324,7 @@ async function pinCurrentDraftToIpfs() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         imageDataUrl: state.draft.imageDataUrl,
-        title: el.draftTitle.value.trim() || 'EzyNFT Creation',
+        title: el.draftTitle.value.trim() || 'EchoMint Creation',
         description: el.draftDesc.value.trim(),
         provenance,
       }),
@@ -347,14 +363,14 @@ el.nftDraftForm.onsubmit = async (e) => {
       await pinCurrentDraftToIpfs();
     }
 
-    const title = el.draftTitle.value.trim() || 'EzyNFT Creation';
-    const description = el.draftDesc.value.trim() || 'Minted with EzyNFT';
+    const title = el.draftTitle.value.trim() || 'EchoMint Creation';
+    const description = el.draftDesc.value.trim() || 'Minted with EchoMint';
     const media = state.draft.gatewayUrl || state.draft.imageDataUrl;
     const provenance = JSON.stringify({
       prompt: el.draftPrompt.value.trim(),
       style: el.draftStyle.value.trim(),
       model: state.draft.imageProvider,
-      generator: 'EzyNFT Studio',
+      generator: 'EchoMint Studio',
       createdAt: new Date().toISOString(),
     });
 
@@ -395,10 +411,9 @@ el.nftDraftForm.onsubmit = async (e) => {
 
     const tokenId = result?.token_id || 'NFT';
     el.mintStatus.textContent = '';
-    const msgPrefix = document.createTextNode('Minted ');
+    el.mintStatus.appendChild(document.createTextNode('Minted '));
     const strong = document.createElement('strong');
     strong.textContent = tokenId;
-    el.mintStatus.appendChild(msgPrefix);
     el.mintStatus.appendChild(strong);
     if (transactionHash) {
       el.mintStatus.appendChild(document.createTextNode('! '));
@@ -452,7 +467,7 @@ async function loadGallery() {
     card.className = 'gallery-item';
 
     const img = document.createElement('img');
-    img.src = token.metadata?.media || './assets/new-logo.png';
+    img.src = token.metadata?.media || '';
     img.alt = token.metadata?.title || token.token_id;
     card.appendChild(img);
 

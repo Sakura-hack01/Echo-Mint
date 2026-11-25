@@ -1,7 +1,7 @@
 {
-  "name": "ezynft-backend",
+  "name": "echomint-backend",
   "version": "1.0.0",
-  "description": "Zero-dependency Node.js AI, image generation, and IPFS pinning API for EzyNFT",
+  "description": "Zero-dependency Node.js AI, image generation, and IPFS pinning API for EchoMint",
   "main": "index.js",
   "scripts": {
     "build": "node --check index.js",

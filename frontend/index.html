@@ -3,150 +3,263 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="assets/new-logo.png"/>
-  <link rel="apple-touch-icon" href="assets/new-logo.png"/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-  <title>EzyNFT</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230072CE'/%3E%3Cstop offset='100%25' stop-color='%23FF585D'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M32 14L48 32L32 50L16 32Z' fill='none' stroke='%23fff' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23fff'/%3E%3C/svg%3E"/>
+  <title>EchoMint — AI-to-NEAR NFT Studio</title>
   <link rel="stylesheet" href="assets/global.css">
 </head>
 <body>
-  <main id="signed-out-flow" style="display: none">
-    <h1 class="heading display-4">EzyNFT</h1>
-    <div class="main-line">
-      <div class="text">
-        <h1 class="text-nft">Here is the new way to make NFTs</h1>
-        <p class="subtext-nft">Chat with our automated chat-bot to understand Web3 and start your minting journey!</p>
-      </div>
-      <img src="./assets/main.svg" alt="nft" class="nft">
-    </div>
-    <p class="auth-actions" style="text-align: center; margin-top: 2.5em">
-      <button id="sign-in-button">Sign in with NEAR Wallet</button>
-      <button id="demo-mode-button" class="btn-secondary-outline" type="button">Preview Studio (Demo)</button>
-    </p>
-  </main>
-
-  <div id="signed-in-flow" style="display: none">
+  <div class="app-shell">
+    <!-- Unified Top Navigation Bar (same appearance on Landing & Studio) -->
     <header class="topbar">
-      <button id="sign-out-button">
-        Sign out <span data-behavior="account-id"></span>
-      </button>
-      <div class="status-pills" id="provider-status">
-        <span class="status-pill" id="pill-chat">AI: connecting...</span>
-        <span class="status-pill" id="pill-image">Art: connecting...</span>
-        <span class="status-pill" id="pill-ipfs">IPFS: connecting...</span>
-        <span class="status-pill" id="pill-contract">Contract: checking...</span>
+      <div class="brand-lockup">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="echoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0072CE"/>
+                <stop offset="100%" stop-color="#FF585D"/>
+              </linearGradient>
+            </defs>
+            <rect width="40" height="40" rx="11" fill="url(#echoGrad)"/>
+            <path d="M20 8L31 20L20 32L9 20L20 8Z" stroke="#FFFFFF" stroke-width="2.4" stroke-linejoin="round"/>
+            <circle cx="20" cy="20" r="4" fill="#FFFFFF"/>
+          </svg>
+        </span>
+        <div class="brand-text">
+          <span class="brand-name">EchoMint</span>
+          <span class="brand-sub">AI • IPFS • NEAR Studio</span>
+        </div>
+      </div>
+
+      <!-- Signed-out topbar actions -->
+      <div id="topbar-signed-out" class="topbar-actions">
+        <button id="topbar-demo-btn" class="btn-secondary-outline" type="button">Preview Studio</button>
+        <button id="topbar-signin-btn" type="button">Sign in with NEAR Wallet</button>
+      </div>
+
+      <!-- Signed-in / Studio topbar status & actions -->
+      <div id="topbar-signed-in" class="topbar-actions" style="display: none;">
+        <div class="status-pills" id="provider-status">
+          <span class="status-pill" id="pill-chat">AI: connecting...</span>
+          <span class="status-pill" id="pill-image">Art: connecting...</span>
+          <span class="status-pill" id="pill-ipfs">IPFS: connecting...</span>
+          <span class="status-pill" id="pill-contract">Contract: checking...</span>
+        </div>
+        <button id="sign-out-button" class="btn-secondary-outline" type="button">
+          Sign out <span data-behavior="account-id"></span>
+        </button>
       </div>
     </header>
 
-    <div class="main-next-line">
-      <div class="text">
-        <h1 class="text-nft">Follow The Arrow!</h1>
-        <p class="subtext-nft">Our services include Minting NFTs on NEAR and IPFS storage.</p>
-      </div>
-      <img src="./assets/arrow.jpeg" alt="arrow" class="arrow-nft">
-    </div>
+    <!-- Landing View (Matches Studio Dashboard Card Grid) -->
+    <main id="signed-out-flow" style="display: none;">
+      <section class="hero-grid">
+        <div class="studio-card hero-card">
+          <span class="badge-tag">Conversational Web3 Studio</span>
+          <h1 class="hero-title">Mint AI NFTs on NEAR in a Few Quips</h1>
+          <p class="hero-subtitle">
+            Chat with <strong>EchoMint Assistant</strong> to brainstorm artwork, pin files and metadata permanently to <strong>IPFS</strong>, and mint <strong>NEP-171</strong> NFTs with on-chain prompt provenance.
+          </p>
 
-    <div class="main-next-next-line">
-      <div class="text">
-        <h1 class="text-nft">Did You Do It?</h1>
-        <p class="subtext-nft">We offer Generative AI art, IPFS pinning, and on-chain Prompt Provenance in our chatbot.</p>
-        <button id="open-chat-cta" type="button" class="cta-chat-btn">Open EzyNFT Chatbot</button>
-      </div>
-      <img src="./assets/question.svg" alt="question" class="question-nft">
-    </div>
+          <div class="pipeline-strip compact">
+            <div class="pipeline-step">
+              <span class="step-num">1</span>
+              <div>
+                <strong>Chat &amp; Generate</strong>
+                <small>Turn prompts into art</small>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <span class="step-num">2</span>
+              <div>
+                <strong>Pin to IPFS</strong>
+                <small>Permanent Pinata CID</small>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <span class="step-num">3</span>
+              <div>
+                <strong>Mint on NEAR</strong>
+                <small>On-chain provenance</small>
+              </div>
+            </div>
+          </div>
 
-    <!-- Live NFT Studio & Preview -->
-    <section class="studio-section" aria-label="EzyNFT Minting Studio">
-      <div class="studio-grid">
-        <div class="studio-card">
+          <div class="auth-actions">
+            <button id="sign-in-button" type="button">Sign in with NEAR Wallet</button>
+            <button id="demo-mode-button" class="btn-secondary-outline" type="button">Open Studio Preview</button>
+          </div>
+        </div>
+
+        <div class="studio-card hero-preview-card">
           <div class="studio-card-header">
-            <h2>Live NFT Draft</h2>
-            <span class="badge-tag" id="draft-source-badge">Waiting for AI prompt</span>
+            <h2>Studio Preview</h2>
+            <span class="badge-tag badge-mint">NEP-171 Ready</span>
           </div>
-          <div class="nft-preview-frame" id="nft-preview-frame">
-            <div class="nft-preview-empty" id="nft-preview-empty">
-              Ask the EzyNFT chatbot (bottom-right) to create an NFT, or type a prompt below to generate artwork.
-            </div>
-            <img id="nft-preview-img" alt="Generated NFT preview" style="display: none;">
+          <div class="nft-preview-frame landing-showcase">
+            <img src="./assets/main.svg" alt="EchoMint NFT creation showcase">
           </div>
-
-          <form id="nft-draft-form" class="draft-form">
-            <label for="draft-prompt">AI Art Prompt</label>
-            <div class="prompt-row">
-              <input id="draft-prompt" type="text" placeholder="e.g. Cyberpunk lotus floating over NEAR skyline" autocomplete="off">
-              <button id="generate-art-btn" type="button">Generate</button>
+          <div class="showcase-meta">
+            <div class="showcase-row">
+              <strong>EchoMint Genesis #1</strong>
+              <span class="badge-tag">AI Co-Created</span>
             </div>
-
-            <div class="field-row">
-              <div class="field-col">
-                <label for="draft-title">NFT Title</label>
-                <input id="draft-title" type="text" placeholder="Cyber Lotus #1" autocomplete="off">
-              </div>
-              <div class="field-col">
-                <label for="draft-style">Art Style</label>
-                <input id="draft-style" type="text" value="Digital Collectible" autocomplete="off">
-              </div>
-            </div>
-
-            <label for="draft-description">Description</label>
-            <textarea id="draft-description" rows="2" placeholder="Describe your NFT..."></textarea>
-
-            <div class="provenance-box" id="provenance-box" style="display: none;">
+            <p class="showcase-desc">
+              Launch the interactive Studio to generate artwork, pin to IPFS, and view your minted NEAR collection.
+            </p>
+            <div class="provenance-box">
               <strong>On-Chain Prompt Provenance:</strong>
-              <span id="provenance-summary"></span>
+              <span>"Neon cyberpunk lotus floating over NEAR skyline"</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Studio Dashboard View -->
+    <div id="signed-in-flow" style="display: none;">
+      <section class="studio-banner studio-card">
+        <div class="studio-banner-copy">
+          <span class="badge-tag">EchoMint Workspace</span>
+          <h1>Create, Pin &amp; Mint Your Next NFT</h1>
+          <p>Use the <strong>EchoMint Assistant</strong> or enter a prompt below to craft artwork, pin metadata to IPFS, and mint directly to <strong data-behavior="account-id"></strong>.</p>
+        </div>
+        <div class="studio-banner-actions">
+          <button id="open-chat-cta" type="button" class="cta-chat-btn">Open EchoMint Assistant</button>
+        </div>
+      </section>
+
+      <section class="pipeline-strip">
+        <div class="studio-card pipeline-card">
+          <span class="step-num">1</span>
+          <div>
+            <strong>Prompt &amp; Generate</strong>
+            <small>Describe art in chat or draft form</small>
+          </div>
+        </div>
+        <div class="studio-card pipeline-card">
+          <span class="step-num">2</span>
+          <div>
+            <strong>Pin to IPFS</strong>
+            <small>Store image &amp; JSON via Pinata</small>
+          </div>
+        </div>
+        <div class="studio-card pipeline-card">
+          <span class="step-num">3</span>
+          <div>
+            <strong>Mint on NEAR</strong>
+            <small>Save prompt provenance on-chain</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="studio-section" aria-label="EchoMint Studio">
+        <div class="studio-grid">
+          <!-- Left: Live NFT Draft -->
+          <div class="studio-card">
+            <div class="studio-card-header">
+              <h2>Live NFT Draft</h2>
+              <span class="badge-tag" id="draft-source-badge">Waiting for AI prompt</span>
             </div>
 
-            <div class="mint-actions">
-              <button id="pin-ipfs-btn" type="button" class="btn-secondary-outline">1. Pin to IPFS</button>
-              <button id="mint-nft-btn" type="submit" disabled>2. Mint on NEAR</button>
+            <div class="nft-preview-frame" id="nft-preview-frame">
+              <div class="nft-preview-empty" id="nft-preview-empty">
+                <p>Ask the <strong>EchoMint Assistant</strong> to craft an NFT, or type a prompt below to generate artwork.</p>
+                <button id="empty-open-chat-btn" type="button" class="btn-secondary-outline btn-small">Chat with EchoMint AI</button>
+              </div>
+              <img id="nft-preview-img" alt="Generated NFT preview" style="display: none;">
             </div>
-            <p class="mint-status" id="mint-status"></p>
+
+            <form id="nft-draft-form" class="draft-form">
+              <label for="draft-prompt">AI Art Prompt</label>
+              <div class="prompt-row">
+                <input id="draft-prompt" type="text" placeholder="e.g. Cyberpunk lotus floating over NEAR skyline" autocomplete="off">
+                <button id="generate-art-btn" type="button">Generate</button>
+              </div>
+
+              <div class="field-row">
+                <div class="field-col">
+                  <label for="draft-title">NFT Title</label>
+                  <input id="draft-title" type="text" placeholder="Cyber Lotus #1" autocomplete="off">
+                </div>
+                <div class="field-col">
+                  <label for="draft-style">Art Style</label>
+                  <input id="draft-style" type="text" value="Digital Collectible" autocomplete="off">
+                </div>
+              </div>
+
+              <label for="draft-description">Description</label>
+              <textarea id="draft-description" rows="2" placeholder="Describe your NFT..."></textarea>
+
+              <div class="provenance-box" id="provenance-box" style="display: none;">
+                <strong>On-Chain Prompt Provenance:</strong>
+                <span id="provenance-summary"></span>
+              </div>
+
+              <div class="mint-actions">
+                <button id="pin-ipfs-btn" type="button" class="btn-secondary-outline">1. Pin to IPFS</button>
+                <button id="mint-nft-btn" type="submit" disabled>2. Mint on NEAR</button>
+              </div>
+              <p class="mint-status" id="mint-status"></p>
+            </form>
+          </div>
+
+          <!-- Right: Minted NFTs Gallery -->
+          <div class="studio-card">
+            <div class="studio-card-header">
+              <h2>Your Minted NFTs</h2>
+              <button id="refresh-gallery-btn" type="button" class="btn-secondary-outline btn-small">Refresh</button>
+            </div>
+            <div id="nft-gallery" class="nft-gallery">
+              <p class="gallery-empty">No NFTs minted yet for this account.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Floating EchoMint Chatbot Widget -->
+      <div id="echo-chat-widget" class="echo-chat-widget">
+        <div id="echo-chat-panel" class="echo-chat-panel" style="display: none;">
+          <div class="echo-chat-header">
+            <div class="echo-chat-brand">
+              <span class="chat-brand-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="32" height="32" rx="8" fill="#FFFFFF" fill-opacity="0.18"/>
+                  <path d="M16 6L25 16L16 26L7 16L16 6Z" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+                  <circle cx="16" cy="16" r="3" fill="#FFFFFF"/>
+                </svg>
+              </span>
+              <div>
+                <strong>EchoMint Assistant</strong>
+                <small>AI • IPFS • NEAR</small>
+              </div>
+            </div>
+            <button id="echo-chat-close" type="button" aria-label="Close chat">&times;</button>
+          </div>
+
+          <div id="echo-chat-messages" class="echo-chat-messages"></div>
+
+          <div class="echo-quick-chips">
+            <button type="button" class="chip-btn" data-prompt="Create a neon cyberpunk lotus floating over Tokyo">Cyberpunk Lotus</button>
+            <button type="button" class="chip-btn" data-prompt="What is IPFS?">What is IPFS?</button>
+            <button type="button" class="chip-btn" data-prompt="How does NEAR minting work?">How NEAR mints</button>
+          </div>
+
+          <form id="echo-chat-form" class="echo-chat-input-row">
+            <input id="echo-chat-input" type="text" placeholder="Describe an NFT or ask about Web3..." autocomplete="off">
+            <button type="submit">Send</button>
           </form>
         </div>
 
-        <div class="studio-card">
-          <div class="studio-card-header">
-            <h2>Your Minted NFTs</h2>
-            <button id="refresh-gallery-btn" type="button" class="btn-small">Refresh</button>
-          </div>
-          <div id="nft-gallery" class="nft-gallery">
-            <p class="gallery-empty">No NFTs minted yet for this account.</p>
-          </div>
-        </div>
+        <button id="echo-chat-launcher" class="echo-chat-launcher" type="button" aria-label="Open EchoMint Assistant">
+          <svg viewBox="0 0 32 32" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 8C6 6.34315 7.34315 5 9 5H23C24.6569 5 26 6.34315 26 8V19C26 20.6569 24.6569 22 23 22H13L7 27V22H9C7.34315 22 6 20.6569 6 19V8Z" stroke="#FFFFFF" stroke-width="2.2" stroke-linejoin="round"/>
+            <circle cx="12" cy="13.5" r="1.5" fill="#FFFFFF"/>
+            <circle cx="16" cy="13.5" r="1.5" fill="#FFFFFF"/>
+            <circle cx="20" cy="13.5" r="1.5" fill="#FFFFFF"/>
+          </svg>
+        </button>
       </div>
-    </section>
-
-    <!-- Floating EzyNFT Chatbot Widget -->
-    <div id="ezy-chat-widget" class="ezy-chat-widget">
-      <div id="ezy-chat-panel" class="ezy-chat-panel" style="display: none;">
-        <div class="ezy-chat-header">
-          <div class="ezy-chat-brand">
-            <img src="./assets/new-logo.png" alt="EzyNFT">
-            <div>
-              <strong>EzyNFT Assistant</strong>
-              <small>AI + IPFS + NEAR</small>
-            </div>
-          </div>
-          <button id="ezy-chat-close" type="button" aria-label="Close chat">&times;</button>
-        </div>
-
-        <div id="ezy-chat-messages" class="ezy-chat-messages"></div>
-
-        <div class="ezy-quick-chips">
-          <button type="button" class="chip-btn" data-prompt="Create a neon cyberpunk lotus floating over Tokyo">Cyberpunk Lotus</button>
-          <button type="button" class="chip-btn" data-prompt="What is IPFS?">What is IPFS?</button>
-          <button type="button" class="chip-btn" data-prompt="How does NEAR minting work?">How NEAR mints</button>
-        </div>
-
-        <form id="ezy-chat-form" class="ezy-chat-input-row">
-          <input id="ezy-chat-input" type="text" placeholder="Describe an NFT or ask about Web3..." autocomplete="off">
-          <button type="submit">Send</button>
-        </form>
-      </div>
-
-      <button id="ezy-chat-launcher" class="ezy-chat-launcher" type="button" aria-label="Open EzyNFT Chatbot">
-        <img src="./assets/chat2.jpeg" alt="Chat with EzyNFT">
-      </button>
     </div>
   </div>
 

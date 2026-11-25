@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/new-logo.png"/>
+  <link rel="apple-touch-icon" href="assets/new-logo.png"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <title>EzyNFT</title>
+  <link rel="stylesheet" href="assets/global.css">
+</head>
+<body>
+  <main id="signed-out-flow" style="display: none">
+    <h1 class="heading display-4">EzyNFT</h1>
+    <div class="main-line">
+      <div class="text">
+        <h1 class="text-nft">Here is the new way to make NFTs</h1>
+        <p class="subtext-nft">Chat with our automated chat-bot to understand Web3 and start your minting journey!</p>
+      </div>
+      <img src="./assets/main.svg" alt="nft" class="nft">
+    </div>
+    <p class="auth-actions" style="text-align: center; margin-top: 2.5em">
+      <button id="sign-in-button">Sign in with NEAR Wallet</button>
+      <button id="demo-mode-button" class="btn-secondary-outline" type="button">Preview Studio (Demo)</button>
+    </p>
+  </main>
+
+  <div id="signed-in-flow" style="display: none">
+    <header class="topbar">
+      <button id="sign-out-button">
+        Sign out <span data-behavior="account-id"></span>
+      </button>
+      <div class="status-pills" id="provider-status">
+        <span class="status-pill" id="pill-chat">AI: connecting...</span>
+        <span class="status-pill" id="pill-image">Art: connecting...</span>
+        <span class="status-pill" id="pill-ipfs">IPFS: connecting...</span>
+        <span class="status-pill" id="pill-contract">Contract: checking...</span>
+      </div>
+    </header>
+
+    <div class="main-next-line">
+      <div class="text">
+        <h1 class="text-nft">Follow The Arrow!</h1>
+        <p class="subtext-nft">Our services include Minting NFTs on NEAR and IPFS storage.</p>
+      </div>
+      <img src="./assets/arrow.jpeg" alt="arrow" class="arrow-nft">
+    </div>
+
+    <div class="main-next-next-line">
+      <div class="text">
+        <h1 class="text-nft">Did You Do It?</h1>
+        <p class="subtext-nft">We offer Generative AI art, IPFS pinning, and on-chain Prompt Provenance in our chatbot.</p>
+        <button id="open-chat-cta" type="button" class="cta-chat-btn">Open EzyNFT Chatbot</button>
+      </div>
+      <img src="./assets/question.svg" alt="question" class="question-nft">
+    </div>
+
+    <!-- Live NFT Studio & Preview -->
+    <section class="studio-section" aria-label="EzyNFT Minting Studio">
+      <div class="studio-grid">
+        <div class="studio-card">
+          <div class="studio-card-header">
+            <h2>Live NFT Draft</h2>
+            <span class="badge-tag" id="draft-source-badge">Waiting for AI prompt</span>
+          </div>
+          <div class="nft-preview-frame" id="nft-preview-frame">
+            <div class="nft-preview-empty" id="nft-preview-empty">
+              Ask the EzyNFT chatbot (bottom-right) to create an NFT, or type a prompt below to generate artwork.
+            </div>
+            <img id="nft-preview-img" alt="Generated NFT preview" style="display: none;">
+          </div>
+
+          <form id="nft-draft-form" class="draft-form">
+            <label for="draft-prompt">AI Art Prompt</label>
+            <div class="prompt-row">
+              <input id="draft-prompt" type="text" placeholder="e.g. Cyberpunk lotus floating over NEAR skyline" autocomplete="off">
+              <button id="generate-art-btn" type="button">Generate</button>
+            </div>
+
+            <div class="field-row">
+              <div class="field-col">
+                <label for="draft-title">NFT Title</label>
+                <input id="draft-title" type="text" placeholder="Cyber Lotus #1" autocomplete="off">
+              </div>
+              <div class="field-col">
+                <label for="draft-style">Art Style</label>
+                <input id="draft-style" type="text" value="Digital Collectible" autocomplete="off">
+              </div>
+            </div>
+
+            <label for="draft-description">Description</label>
+            <textarea id="draft-description" rows="2" placeholder="Describe your NFT..."></textarea>
+
+            <div class="provenance-box" id="provenance-box" style="display: none;">
+              <strong>On-Chain Prompt Provenance:</strong>
+              <span id="provenance-summary"></span>
+            </div>
+
+            <div class="mint-actions">
+              <button id="pin-ipfs-btn" type="button" class="btn-secondary-outline">1. Pin to IPFS</button>
+              <button id="mint-nft-btn" type="submit" disabled>2. Mint on NEAR</button>
+            </div>
+            <p class="mint-status" id="mint-status"></p>
+          </form>
+        </div>
+
+        <div class="studio-card">
+          <div class="studio-card-header">
+            <h2>Your Minted NFTs</h2>
+            <button id="refresh-gallery-btn" type="button" class="btn-small">Refresh</button>
+          </div>
+          <div id="nft-gallery" class="nft-gallery">
+            <p class="gallery-empty">No NFTs minted yet for this account.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating EzyNFT Chatbot Widget -->
+    <div id="ezy-chat-widget" class="ezy-chat-widget">
+      <div id="ezy-chat-panel" class="ezy-chat-panel" style="display: none;">
+        <div class="ezy-chat-header">
+          <div class="ezy-chat-brand">
+            <img src="./assets/new-logo.png" alt="EzyNFT">
+            <div>
+              <strong>EzyNFT Assistant</strong>
+              <small>AI + IPFS + NEAR</small>
+            </div>
+          </div>
+          <button id="ezy-chat-close" type="button" aria-label="Close chat">&times;</button>
+        </div>
+
+        <div id="ezy-chat-messages" class="ezy-chat-messages"></div>
+
+        <div class="ezy-quick-chips">
+          <button type="button" class="chip-btn" data-prompt="Create a neon cyberpunk lotus floating over Tokyo">Cyberpunk Lotus</button>
+          <button type="button" class="chip-btn" data-prompt="What is IPFS?">What is IPFS?</button>
+          <button type="button" class="chip-btn" data-prompt="How does NEAR minting work?">How NEAR mints</button>
+        </div>
+
+        <form id="ezy-chat-form" class="ezy-chat-input-row">
+          <input id="ezy-chat-input" type="text" placeholder="Describe an NFT or ask about Web3..." autocomplete="off">
+          <button type="submit">Send</button>
+        </form>
+      </div>
+
+      <button id="ezy-chat-launcher" class="ezy-chat-launcher" type="button" aria-label="Open EzyNFT Chatbot">
+        <img src="./assets/chat2.jpeg" alt="Chat with EzyNFT">
+      </button>
+    </div>
+  </div>
+
+  <script src="index.js" type="module"></script>
+</body>
+</html>
